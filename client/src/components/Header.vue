@@ -8,7 +8,8 @@
       <v-btn flat  class="dark" v-if="!$store.state.isuserloggedin" @click="navigateTo({name:'login'})">Login</v-btn>
       <v-btn flat  class="dark" v-if="$store.state.isuserloggedin" @click="logout()">Logout</v-btn>
       <v-layout row justify-center> <v-dialog v-model="dialog" width="600px">
-      <v-btn color="primary" dark slot="activator" @click="getting()">Open Dialog</v-btn><v-card>
+      <v-btn color="primary"  dark slot="activator" @click="getting()">View Cart</v-btn><v-card >
+          <div v-if="$store.state.isuserloggedin">
         <v-card-title>
           <span class="headline">Cart</span>
         </v-card-title><v-card-text>
@@ -28,11 +29,12 @@
             
             </v-card-text><v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat="flat" @click="dialog = false">Disagree</v-btn>
-          <v-btn color="green darken-1" flat="flat" @click="paypal()">Pay</v-btn>
-           <v-btn color="green darken-1" flat="flat" @click="navigateTo({name:'successpay'})">Pay</v-btn>
+          
+          
+           <v-btn color="green darken-1" flat="flat" @click=" rem(),navigateTo({name:'successpay'}) ">Pay</v-btn>
        
-        </v-card-actions>
+        </v-card-actions></div>
+        <div v-if="!$store.state.isuserloggedin" style="height:100px"><h3>Please login to see your cart</h3></div>
       </v-card>
     </v-dialog></v-layout>
       <v-btn flat class="dark " @click="navigateTo({name:'register'})">Signup</v-btn>
@@ -44,7 +46,7 @@
 
 <script>
 import Cartservice from '@/services/Cartservice'
-import Paypalservice from '@/services/Paypalservice'
+
 
 export default {
     data(){
@@ -70,6 +72,16 @@ export default {
             this.$store.dispatch('setUser',null)
             this.$router.push({name:'login'})
         },
+        async rem(){
+            try{
+                console.log("hello")
+                const response=(await Cartservice.delall(this.$store.state.user.id)).data
+                console.log(response)
+            }
+            catch(err){
+             console.log(err)
+            }
+        },
         async getting(){
             console.log(this.$store.state.user.id)
             try{
@@ -92,24 +104,7 @@ export default {
                 
             }
         },
-        async paypal(){
-            try{
-            const payment=(await Paypalservice.buying()).data
-            console.log(payment)
-            for(let i=0;i<payment.links.length;i++){
-                if(payment.links[i].rel==='approval_url'){
-                    console.log(payment.links[i].href)
-               setImmediate(()=>{
-                   location.href=payment.links[i].href
-               },0)
-                }
-            }
-            console.log(payment)
-            }
-            catch(err){
-                console.log(err)
-            }
-        }
+        
     }
   
 }

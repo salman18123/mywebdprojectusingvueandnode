@@ -8,5 +8,8 @@ export default {
     },
     remove(data){
         return Api().delete(`cart/${data}`)
+    },
+    delall(id){
+  return Api().delete(`user/${id}`)
     }
 }

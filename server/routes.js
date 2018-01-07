@@ -146,6 +146,22 @@ route.delete('/cart/:id',(req,res)=>{
         console.log(err)
     })
 })
+route.delete('/user/:id',(req,res)=>{
+    cart.destroy({
+        
+      where:{
+          userId:req.params.id
+      }  
+    })
+    
+    .then(()=>{
+        res.send({message:"deleted all the items"})
+    })
+    .catch((err)=>{
+        console.log(err)
+        res.send({msg:"not deleted properly"})
+    })
+})
 
 
 
