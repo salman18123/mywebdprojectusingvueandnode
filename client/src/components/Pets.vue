@@ -1,8 +1,8 @@
 
 <template>
 <v-layout row wrap>
-<v-flex xs-4 v-for="(data,index) in this.song" :key="data.id">
-      <v-card style="width:50%">
+<v-flex xs4 v-for="(data,index) in this.song" :key="data.id">
+      <v-card style="width:60%;margin-bottom:2%">
         <v-card-media :src="images[(index+song.length)%song.length]" height="200px">
         </v-card-media>
         <v-card-title primary-title>

@@ -6,6 +6,7 @@ import Petview from '@/components/Petview'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Successpay from '@/components/Successpay'
+import Sellpet from '@/components/Sellpet'
 
 Vue.use(Router)
 
@@ -40,6 +41,11 @@ export default new Router({
       path: '/pay',
       name: 'successpay',
       component: Successpay
+    },
+    {
+      path: '/sell',
+      name: 'sellpet',
+      component: Sellpet
     }
 
   ]

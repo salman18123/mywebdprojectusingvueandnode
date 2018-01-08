@@ -7,6 +7,7 @@
     <v-toolbar-items class="hidden-sm-and-down">
       <v-btn flat  class="dark" v-if="!$store.state.isuserloggedin" @click="navigateTo({name:'login'})">Login</v-btn>
       <v-btn flat  class="dark" v-if="$store.state.isuserloggedin" @click="logout()">Logout</v-btn>
+      <v-btn flat  class="dark" v-if="$store.state.isuserloggedin"  @click="navigateTo({name:'sellpet'})">sellpet</v-btn>
       <v-layout row justify-center> <v-dialog v-model="dialog" width="600px">
       <v-btn color="primary"  dark slot="activator" @click="getting()">View Cart</v-btn><v-card >
           <div v-if="$store.state.isuserloggedin">

@@ -1,13 +1,40 @@
 <template>
   <div id='app'>
-    <h1>Please give us your payment details:</h1>
+    <div>
+      <v-flex xs6 offset-xs3>
+    <v-form v-model="valid" ref="form" lazy-validation>
+    <v-text-field
+      label="Name"
+      v-model="name"
+      
+      
+    ></v-text-field>
+    <v-text-field
+      label="E-mail"
+      v-model="ema"
+      
+     
+    ></v-text-field>
+    <p>Please give us your payment details:</p><br>
+    <v-flex offset-xs5>
     <card class='stripe-card'
       :class='{ complete }'
       stripe='pk_test_D6nQcTNtKTWeMXvwUd4aDwiZ'
       :options='stripeOptions'
       @change='complete = $event.complete'
     />
-    <button class='pay-with-stripe' @click='pay' :disabled='!complete'>Pay with credit card</button>
+    </v-flex><br>
+    <v-btn class='pay-with-stripe' @click='pay' :disabled='!complete'>Pay with credit card</v-btn>
+    
+    
+
+    
+    
+  </v-form>
+      </v-flex>
+    </div>
+    
+  
   </div>
 </template>
  
@@ -20,6 +47,8 @@ export default {
   data () {
     return {
       complete: false,
+      name:(this.$store.state.user.email).split('@')[0],
+      ema:this.$store.state.user.email,
       stripeOptions: {
         // see https://stripe.com/docs/stripe.js#element-options for details
       }
@@ -36,8 +65,8 @@ export default {
       // See https://stripe.com/docs/api#errors for the error object.
       // More general https://stripe.com/docs/stripe.js#stripe-create-token.
       createToken().then((data) => {console.log(data.token)
-      const resp=Paymentservice.success(data.token)
-      console.log(resp)
+      const resp=Paymentservice.success({email:this.$store.state.user.email,stripe:data.token})
+      //console.log(resp)
       }
       )
     }

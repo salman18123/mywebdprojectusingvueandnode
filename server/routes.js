@@ -8,7 +8,15 @@ const stripe=require('stripe')('sk_test_F1Ze2FHOCbuV1KKOEGarJfTm')
 
 route.post('/pets',(req,res)=>{
 
-    pets.create(req.body)
+    pets.create({
+        gender:req.body.gender,
+        location:req.body.location,
+        status:req.body.status,
+        breedname:req.body.breedname,
+        temparament:req.body.temparament,
+        Age:parseInt(req.body.age),
+        Price:parseInt(req.body.price)
+    })
     .then((pet)=>{
         res.status(203).send(pet)
     })
@@ -68,16 +76,17 @@ route.post('/login',(req,res)=>{
 })
 route.post('/pay',(req,res)=>{
     const amount=10000
+    console.log(req.body)
     stripe.customers.create({
-        email:'salmanvit12345@gmail.com',
-        source:req.body.id
+        email:req.body.email,
+        source:req.body.stripe.id
         
     })
     .then((cus)=>{
       stripe.charges.create({
           amount:amount,
           description:'testing',
-          receipt_email:'salmanvit12345@gmail.com',
+          receipt_email:req.body.email,
           currency:'inr',
           customer:cus.id
       }) 
